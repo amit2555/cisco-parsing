@@ -1,3 +1,26 @@
+# Python program to parse output from Cisco CLI command "show ip ospf interface"
+
+'''
+Usage:
+    This program uses PyParsing library mostly.
+
+Args:
+    None
+
+Result:
+    Prints a dictionary with data-structure as follows:
+
+    {interface:
+       {ip: ip_prefix,
+        area: ospf_area,
+        interface_type: ospf_interface_type,
+        cost: ospf_interface_metric,
+        hello: ospf_hello_timer,
+        dead: ospf_dead_timer}
+    }
+
+'''
+
 
 from pyparsing import *
 import re
@@ -11,6 +34,10 @@ ospf3 = Suppress(Word(alphas)*2 + Word(nums) + Literal(",") + Word(alphas)*2 + i
 ospf4 = Suppress(Word(alphas)*3 + Literal(",") + Word(alphas)) + Word(nums) + Suppress(Literal(",") + Word(alphas)) + Word(nums)
 
 
+# This function is copied from the code provided by Kirk Byers in his class
+# Python Fundamentals for Network Engineers
+
+# This function is used to split interface data into a list
 def separate_interface_data(ospf_data):
 
     # Split the data based on 'is up, line protocol is up' but retain this string
@@ -60,7 +87,7 @@ def ospf_parser(section):
 if __name__ == "__main__":
 
     d = dict()
-    with open('ospf_data.txt','r') as f:
+    with open('C:\python33\ospf_data.txt','r') as f:
         ospf = f.read()
         ospf_data_sections = separate_interface_data(ospf)
         
